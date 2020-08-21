@@ -1,6 +1,6 @@
 {
   "name":"NODE-JS-BLOG",
   "description":"A Blog Made In Node JS",
-  "repository":"",
+  "repository":"https://github.com/taurtk/NODE_JS_BLOG",
   "keyword":["node","express","static"]
 }
