@@ -4,7 +4,7 @@ const expressEdge = require('express-edge');
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 const app = express();
-//const cors = require('cors')
+const cors = require('cors')
 const createPostController = require('./controller/createPost');
 const homePageController = require('./controller/homePage');
 const storePostController = require('./controller/storePost');
@@ -27,7 +27,7 @@ mongoose.connect(process.env.DB_URI,{useNewUrlParser:true});
 const storePost = require('./middleware/storePost');
 
 const mongoStore = connectMongo(expressSession);
-//app.use(cors)
+app.use(cors)
 app.use(fileUpload())
 app.use(express.static('public'));
 app.use(expressEdge.engine);
