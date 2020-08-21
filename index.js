@@ -23,7 +23,7 @@ const fileUpload = require('express-fileupload')
 const expressSession = require('express-session');
 const connectMongo = require('connect-mongo');
 const auth = require('./middleware/auth');
-mongoose.connect(process.env.DB_URI);
+mongoose.connect(process.env.DB_URI,{useNewUrlParser:true});
 const storePost = require('./middleware/storePost');
 
 const mongoStore = connectMongo(expressSession);
