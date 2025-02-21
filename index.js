@@ -26,12 +26,20 @@ const auth = require('./middleware/auth');
 mongoose.connect(process.env.DB_URI,{useNewUrlParser:true});
 const storePost = require('./middleware/storePost');
 
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+  key: fs.readFileSync('path/to/your/private-key.pem'),
+  cert: fs.readFileSync('path/to/your/certificate.pem')
+};
+
 const mongoStore = connectMongo(expressSession);
-app.use(cors)
+app.use(cors()); // Fix the usage of cors middleware
 app.use(fileUpload())
 app.use(express.static('public'));
 app.use(expressEdge.engine);
-app.set('views', `${__dirname}/views`);
+app.set('views', `${__dirname}/views`); // Ensure views directory is correctly set
 app.use(expressSession(
   {
     secret: process.env.EXPRESS_SESSION_KEY,
@@ -59,8 +67,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(connectFlash());
 
-
-
 app.get("/",homePageController );
 app.get("/auth/logout",auth,logoutController)
 app.get("/auth/register", redirectIfAuthenticated,createUserController);
@@ -70,9 +76,6 @@ app.post('/users/login',redirectIfAuthenticated,loginUserController);
 app.post('/post/store',auth,storePost,storePostController);
 app.post('/user/register',redirectIfAuthenticated,storeUserController);
 app.get('/post/:id',getPostController);
-
-
-
 
 app.get('/contact',(req,res) =>{
   res.render('contact')
@@ -84,10 +87,10 @@ app.get('/about',(req,res) =>{
 
 app.use((req,res) => res.render('not-found'));
 
- app.listen(process.env.PORT || 4000, () =>
- {
-   console.log(`App listening on port ${process.env.PORT}`);
- });
+https.createServer(options, app).listen(process.env.PORT || 4000, () => {
+  console.log(`App listening on port ${process.env.PORT || 4000}`);
+  console.log(`Visit https://localhost:${process.env.PORT || 4000}`);
+});
 
 // (async()=>
 // {
@@ -98,7 +101,7 @@ app.use((req,res) => res.render('not-found'));
 //   tunnel.on('close',()=>
 //   {
 
-//   })
+//   })Q
 
 
 // })
