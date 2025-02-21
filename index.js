@@ -26,13 +26,14 @@ const auth = require('./middleware/auth');
 mongoose.connect(process.env.DB_URI,{useNewUrlParser:true});
 const storePost = require('./middleware/storePost');
 
-const https = require('https');
-const fs = require('fs');
+// Remove the HTTPS setup
+// const https = require('https');
+// const fs = require('fs');
 
-const options = {
-  key: fs.readFileSync('path/to/your/private-key.pem'),
-  cert: fs.readFileSync('path/to/your/certificate.pem')
-};
+// const options = {
+//   key: fs.readFileSync('path/to/your/private-key.pem'),
+//   cert: fs.readFileSync('path/to/your/certificate.pem')
+// };
 
 const mongoStore = connectMongo(expressSession);
 app.use(cors()); // Fix the usage of cors middleware
@@ -87,9 +88,9 @@ app.get('/about',(req,res) =>{
 
 app.use((req,res) => res.render('not-found'));
 
-https.createServer(options, app).listen(process.env.PORT || 4000, () => {
+app.listen(process.env.PORT || 4000, () => {
   console.log(`App listening on port ${process.env.PORT || 4000}`);
-  console.log(`Visit https://localhost:${process.env.PORT || 4000}`);
+  console.log(`Visit http://localhost:${process.env.PORT || 4000}`);
 });
 
 // (async()=>
@@ -101,7 +102,7 @@ https.createServer(options, app).listen(process.env.PORT || 4000, () => {
 //   tunnel.on('close',()=>
 //   {
 
-//   })Q
+//   })
 
 
 // })
